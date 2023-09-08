@@ -1,0 +1,10 @@
+name: build
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: rm -rf dist
+      - run: NODE_ENV=production npx webpack
