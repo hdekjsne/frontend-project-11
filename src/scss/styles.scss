@@ -1,1 +1,22 @@
 @import "~bootstrap/scss/bootstrap";
+
+.text-white {
+	color: white;
+}
+
+.centered-flex-1item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.space-btw-flex-hor {
+	display: flex;
+	justify-content: space-between;
+	align-items: start;
+}
+
+.height-50 {
+	height: 50px;
+}
