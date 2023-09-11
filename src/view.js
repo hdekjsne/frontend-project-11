@@ -1,2 +1,2 @@
 import { state } from './state.js';
-// import on-change
+import onChange from 'on-change';
