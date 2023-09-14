@@ -1,5 +1,15 @@
+import i18next from 'i18next';
+import { ru } from './locales/ru.js';
 import { state } from './state.js';
 import onChange from 'on-change';
+
+i18next.init({
+	lng: 'ru',
+	debug: true,
+	resources: {
+		ru: { ...ru },
+	},
+});
 
 const { input, submitBtn, feedbackP } = state.elements.core;
 
@@ -24,11 +34,11 @@ function showError() {
 	if (error.match(/a valid URL$/)) {
 		feedbackP.classList.remove('--bs-success-text-emphasis');
 		feedbackP.classList.add('--bs-danger-text-emphasis');
-		feedbackP.textContent = 'Ссылка должна быть валидным URL';
+		feedbackP.textContent = i18next.t('feedback.errors.invalidURL');
 	} else if (error.match(/one of the following/)) {
 		feedbackP.classList.remove('--bs-success-text-emphasis');
 		feedbackP.classList.add('--bs-danger-text-emphasis');
-		feedbackP.textContent = 'RSS уже существует';
+		feedbackP.textContent = i18next.t('feedback.errors.notUniq');
 	}
 	watchedState.app.errors = [];
 }
