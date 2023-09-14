@@ -54,6 +54,9 @@ export const watchedState = onChange(state, (path) => {
 			break;
 		case 'app.errors':
 			showError();
+			break;
+		case 'app.state':
+			if (watchedState.app.state === 'load') feedbackP.textContent = '';
 		default:
 			break;
 	}

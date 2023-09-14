@@ -8,8 +8,6 @@ const { input, submitBtn, feedbackP } = state.elements.core;
 function validateLink(link) {
 	const ifUrl = yup.string().required().url().trim();
 	const ifUniq = yup.mixed().notOneOf(watchedState.input.feeds);
-	// const ifResponses = ?; axios
-	// const ifRss = ?; axios
 	return Promise.all([ifUrl.validate(link), ifUniq.validate(link)])
 		.then(() => {
 			watchedState.input.state = 'ready';
@@ -18,6 +16,7 @@ function validateLink(link) {
 		.catch((err) => {
 			watchedState.input.enable = true;
 			watchedState.input.state = 'fail';
+			watchedState.app.state = 'fail';
 			watchedState.app.errors.push(err.errors[0]);
 			return false;
 		})
@@ -42,6 +41,7 @@ export default function app() {
 	submitBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		watchedState.input.enable = false;
+		watchedState.app.state = 'load';
 		validateLink(input.value); // async
 	});
 }

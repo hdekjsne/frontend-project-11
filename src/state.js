@@ -7,7 +7,18 @@ export const state = {
 		},
 	},
 	app: {
-		state: 'welcome', // welcome, load, success, fail ???
+		state: 'welcome',
+		/*
+		welcome - initial state
+		load - the process of validation + load
+				- empty feedback
+				- disabled input
+		success - successful load
+				- feedback is green + message
+		fail - fail in validation
+				- feedback is red + message
+				- red enabled input
+		*/
 		feeds: [], // { name, url };
 		errors: [], // invalid url, empty input, (bad connection)
 	},
