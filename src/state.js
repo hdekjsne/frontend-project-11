@@ -7,13 +7,18 @@ export const state = {
 		},
 	},
 	app: {
-		state: 'welcome', // welcome, load, success, fail
+		state: 'welcome', // welcome, load, success, fail ???
 		feeds: [], // { name, url };
 		errors: [], // invalid url, empty input, (bad connection)
 	},
 	input: {
-		state: 'empty', // empty, typing, ready
-		isValid: true,
+		state: 'empty',
+		/*
+		empty - fullfilled the load, ready for new input
+		ready - successful validation, ready to load resource
+		fail - failed validation, ready for new input
+	  */
+		enable: true,
 		value: '',
 		feeds: [], // links to urls in state.app.feeds
 	},
