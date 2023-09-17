@@ -2,6 +2,7 @@ import { state } from './state.js';
 import * as yup from 'yup';
 import { watchedState } from './view.js';
 import axios from 'axios';
+import parse from './parser.js';
 
 const { input, submitBtn, feedbackP } = state.elements.core;
 
@@ -21,15 +22,19 @@ function validateLink(link) {
 			watchedState.app.errors.push(err.errors[0]);
 			return false;
 		})
-		.then((bool) => [bool, link]); // to deliver this value to the next validator, which extracts the RSS
+		.then((bool) => [bool, link]);
 }
 
 function requestAndValidate([bool, link]) {
 	if (!bool) return;
 	return axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
 	.then((response) => {
-		console.log(response.data);
-	});
+		console.log(response.data.contents);
+		return response.data.contents;
+	})
+	.catch((err) => {
+		watchedState.app.errors.push(err.errors[0]);
+	})
 }
 
 /*
@@ -53,8 +58,9 @@ export default function app() {
 		watchedState.app.state = 'load';
 		validateLink(input.value).then((processed) => {
 			console.log(processed);
-			requestAndValidate(processed);
+			return requestAndValidate(processed);
+		}).then((xml) => {
+			parse(xml);
 		});
-		/* console.log(await validateLink(input.value)); // async */
 	});
 }
