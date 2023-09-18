@@ -30,7 +30,7 @@ function requestAndValidate([bool, link]) {
 	return axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
 	.then((response) => {
 		console.log(response.data.contents);
-		return response.data.contents;
+		return [link, response.data.contents];
 	})
 	.catch((err) => {
 		watchedState.app.errors.push(err.errors[0]);
@@ -60,7 +60,21 @@ export default function app() {
 			console.log(processed);
 			return requestAndValidate(processed);
 		}).then((xml) => {
-			parse(xml);
+			return parse(xml);
+		}).then(([link, parsedData]) => {
+			console.log(parsedData);
+			watchedState.newData = parsedData;
+			watchedState.input.feeds.push(link);
 		});
 	});
+/*
+	// should make link fade after click
+	document.querySelectorAll('posts li')
+		.forEach((li) => {
+			li.addEventListener('click', (e) => {
+				e.target.classList.remove('fw-bold');
+				e.target.classList.add('fw-normal', 'link-secondary');
+			});
+		});
+ */
 }

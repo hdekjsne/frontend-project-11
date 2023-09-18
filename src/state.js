@@ -5,6 +5,14 @@ export const state = {
 			submitBtn: document.querySelector('button[type=submit]'),
 			feedbackP: document.querySelector('p.feedback'),
 		},
+		posts: {
+			container: document.querySelector('.posts'),
+			ul: undefined,
+		},
+		feeds: {
+			container: document.querySelector('.feeds'),
+			ul: undefined,
+		},
 	},
 	app: {
 		state: 'welcome',
@@ -19,7 +27,6 @@ export const state = {
 				- feedback is red + message
 				- red enabled input
 		*/
-		feeds: [], // { name, url };
 		errors: [], // invalid url, empty input, (bad connection)
 	},
 	input: {
@@ -31,11 +38,12 @@ export const state = {
 	  */
 		enable: true,
 		value: '',
-		feeds: [], // links to urls in state.app.feeds
+		feeds: [], // links used in input
 	},
 	feedbackP: {
 		state: 'hidden', // visible, hidden
 		color: 'green', // green, red
 		content: '', // textContent
-	}
+	},
+	newData: undefined,
 }

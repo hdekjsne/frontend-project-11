@@ -1,6 +1,12 @@
-export default function parse(xml) {
+import { watchedState } from "./view.js";
+
+export default function parse([link, xml]) {
 	const parser = new DOMParser;
 	const tree = parser.parseFromString(xml, 'text/xml');
+	if (tree.querySelector('rss') == undefined) {
+		watchedState.app.errors.push('should be a valid link');
+		return;
+	}
 	const items = [];
 	tree.querySelectorAll('item')
 		.forEach((item) => {
@@ -17,5 +23,6 @@ export default function parse(xml) {
 		},
 		items: items,
 	};
-	return result;
+	console.log(result);
+	return Promise.resolve([link, result]);
 }

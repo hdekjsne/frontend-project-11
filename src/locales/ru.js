@@ -11,6 +11,7 @@ export const ru = {
 		DOMelements: {
 			posts: 'Посты',
 			feeds: 'Фиды',
+			watch: 'Просмотр',
 		},
 	},
 }
