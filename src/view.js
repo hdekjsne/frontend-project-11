@@ -32,8 +32,8 @@ function styleInput() {
 function showError() {
 	if (watchedState.app.errors.length === 0) return;
 	const error = watchedState.app.errors[0];
-	feedbackP.classList.remove('--bs-success-text-emphasis');
-	feedbackP.classList.add('--bs-danger-text-emphasis');
+	feedbackP.classList.remove('text-success');
+	feedbackP.classList.add('text-danger');
 	if (error.match(/a valid URL$/)) {
 		feedbackP.textContent = i18next.t('feedback.errors.invalidURL');
 	} else if (error.match(/one of the following/)) {
@@ -101,6 +101,10 @@ function createPost(item) {
 	button.setAttribute('data-bs-target', '#modal');
 	button.textContent = i18next.t('DOMelements.watch');
 	li.append(a, button);
+	li.addEventListener('click', (e) => {
+		li.querySelector('a').classList.remove('fw-bold');
+		li.querySelector('a').classList.add('fw-normal', 'link-secondary');
+	})
 	state.elements.posts.ul.prepend(li);
 }
 
@@ -118,6 +122,11 @@ export const watchedState = onChange(state, (path) => {
 			break;
 		case 'app.state':
 			if (watchedState.app.state === 'load') feedbackP.textContent = '';
+			if (watchedState.app.state === 'success') {
+				feedbackP.classList.remove('text-danger');			
+				feedbackP.classList.add('text-success');
+				feedbackP.textContent = i18next.t('feedback.success');
+			}
 			break;
 		case 'input.feeds':
 			if (watchedState.input.feeds.length === 1) {

@@ -4,7 +4,7 @@ import { watchedState } from './view.js';
 import axios from 'axios';
 import parse from './parser.js';
 
-const { input, submitBtn, feedbackP } = state.elements.core;
+const { input, submitBtn } = state.elements.core;
 
 // utils
 function validateLink(link) {
@@ -28,23 +28,14 @@ function validateLink(link) {
 function requestAndValidate([bool, link]) {
 	if (!bool) return;
 	return axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
-	.then((response) => {
-		console.log(response.data.contents);
-		return [link, response.data.contents];
-	})
-	.catch((err) => {
-		watchedState.app.errors.push(err.errors[0]);
-	})
+		.then((response) => {
+			console.log(response.data.contents);
+			return [link, response.data.contents];
+		})
+		.catch((err) => {
+			watchedState.app.errors.push(err.errors[0]);
+		});
 }
-
-/*
-next validator: 
-- gets the resources
-- checks if that's RSS
-- delivers resources to parser
-- blocks the input for time of loading 
-- adds the link to state.app.feeds (and link in state.input.feeds) in case of success
-*/
 
 export default function app() {
 	// general utils ?
@@ -65,16 +56,12 @@ export default function app() {
 			console.log(parsedData);
 			watchedState.newData = parsedData;
 			watchedState.input.feeds.push(link);
+			return Promise.resolve(true);
+		})
+		.then(() => {
+			watchedState.app.state = 'success';
+			watchedState.input.state = 'empty';
+			watchedState.input.enable = true;
 		});
 	});
-/*
-	// should make link fade after click
-	document.querySelectorAll('posts li')
-		.forEach((li) => {
-			li.addEventListener('click', (e) => {
-				e.target.classList.remove('fw-bold');
-				e.target.classList.add('fw-normal', 'link-secondary');
-			});
-		});
- */
 }
