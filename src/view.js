@@ -5,7 +5,7 @@ import onChange from 'on-change';
 
 i18next.init({
 	lng: 'ru',
-	debug: true,
+	debug: false,
 	resources: {
 		ru: { ...ru },
 	},
@@ -15,7 +15,7 @@ const { input, feedbackP } = state.elements.core;
 const { posts, feeds } = state.elements;
 
 function styleInput() {
-	switch (watchedState.input.state) {
+	switch (state.input.state) {
 		case 'empty':
 			input.textContent = null;
 			input.setAttribute('autofocus', '');
@@ -30,8 +30,8 @@ function styleInput() {
 }
 
 function showError() {
-	if (watchedState.app.errors.length === 0) return;
-	const error = watchedState.app.errors[0];
+	if (state.app.errors.length === 0) return;
+	const error = state.app.errors[0];
 	feedbackP.classList.remove('text-success');
 	feedbackP.classList.add('text-danger');
 	if (error.match(/a valid URL$/)) {
@@ -69,18 +69,15 @@ function initList(side) {
 	}
 }
 
-// when we change something in state, we use watchedState
-// when we only read, we use state
-
 function createFeed() {
 	const li = document.createElement('li');
 	li.classList.add('list-group-item', 'border-0', 'border-end-0');
 	const h = document.createElement('h3');
 	h.classList.add('h6', 'm-0');
-	h.textContent = watchedState.newData.feed.title;
+	h.textContent = state.newData.feed.title;
 	const p = document.createElement('p');
 	p.classList.add('m-0', 'small', 'text-black-50');
-	p.textContent = watchedState.newData.feed.description;
+	p.textContent = state.newData.feed.description;
 	li.append(h, p);
 	state.elements.feeds.ul.prepend(li);
 }
@@ -121,15 +118,15 @@ export const watchedState = onChange(state, (path) => {
 			showError();
 			break;
 		case 'app.state':
-			if (watchedState.app.state === 'load') feedbackP.textContent = '';
-			if (watchedState.app.state === 'success') {
+			if (state.app.state === 'load') feedbackP.textContent = '';
+			if (state.app.state === 'success') {
 				feedbackP.classList.remove('text-danger');			
 				feedbackP.classList.add('text-success');
 				feedbackP.textContent = i18next.t('feedback.success');
 			}
 			break;
 		case 'input.feeds':
-			if (watchedState.input.feeds.length === 1) {
+			if (state.input.feeds.length === 1) {
 				initList('posts');
 				initList('feeds');
 			}

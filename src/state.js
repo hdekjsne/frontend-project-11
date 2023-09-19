@@ -27,7 +27,7 @@ export const state = {
 				- feedback is red + message
 				- red enabled input
 		*/
-		errors: [], // invalid url, empty input, (bad connection)
+		errors: [],
 	},
 	input: {
 		state: 'empty',
@@ -37,13 +37,7 @@ export const state = {
 		fail - failed validation, ready for new input
 	  */
 		enable: true,
-		value: '',
-		feeds: [], // links used in input
-	},
-	feedbackP: {
-		state: 'hidden', // visible, hidden
-		color: 'green', // green, red
-		content: '', // textContent
+		feeds: [],
 	},
 	newData: undefined,
 }

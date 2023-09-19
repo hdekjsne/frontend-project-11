@@ -6,7 +6,6 @@ import parse from './parser.js';
 
 const { input, submitBtn } = state.elements.core;
 
-// utils
 function validateLink(link) {
 	const ifUrl = yup.string().required().url().trim();
 	const ifUniq = yup.mixed().notOneOf(watchedState.input.feeds);
@@ -38,12 +37,7 @@ function requestAndValidate([bool, link]) {
 }
 
 export default function app() {
-	// general utils ?
-
-	// core functionality
-	
-	// place for listeners
-	submitBtn.addEventListener('click', async (e) => {
+	submitBtn.addEventListener('click', (e) => {
 		e.preventDefault();
 		watchedState.input.enable = false;
 		watchedState.app.state = 'load';
