@@ -1,13 +1,21 @@
-export const posts = {
+export let data = {
 }
 
 /*
-feed: [
-	{
-		id:
+data = {
+	feed: {
 		title:
 		link:
-		description:
+		posts: {
+			title: {
+				title:
+				description:
+				link:
+			}
+			...otherPosts
+		}
 	}
-]
+	...otherFeed
+}
+// доступ по Object.keys;
 */

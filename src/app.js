@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { watchedState } from './view.js';
 import axios from 'axios';
 import parse from './parser.js';
+import { p } from './parser.js';
 
 const { input, submitBtn } = state.elements.core;
 
@@ -45,6 +46,7 @@ export default function app() {
 			console.log(processed);
 			return requestAndValidate(processed);
 		}).then((xml) => {
+			p(xml);
 			return parse(xml);
 		}).then(([link, parsedData]) => {
 			console.log(parsedData);
@@ -57,5 +59,6 @@ export default function app() {
 			watchedState.input.state = 'empty';
 			watchedState.input.enable = true;
 		});
+		// add catch here
 	});
 }
