@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { ru } from './locales/ru.js';
 import { state } from './state.js';
 import onChange from 'on-change';
+import { data } from './data/data.js';
 
 i18next.init({
 	lng: 'ru',
@@ -32,12 +33,17 @@ function styleInput() {
 function showError() {
 	if (state.app.errors.length === 0) return;
 	const error = state.app.errors[0];
+	console.log(error);
 	feedbackP.classList.remove('text-success');
 	feedbackP.classList.add('text-danger');
 	if (error.match(/a valid URL$/)) {
 		feedbackP.textContent = i18next.t('feedback.errors.invalidURL');
 	} else if (error.match(/one of the following/)) {
 		feedbackP.textContent = i18next.t('feedback.errors.notUniq');
+	} else if (error.match(/required field/)) {
+		feedbackP.textContent = i18next.t('feedback.errors.emptyField');
+	} else {
+		feedbackP.textContent = i18next.t('feedback.errors.badConnection');
 	}
 	watchedState.app.errors = [];
 }
@@ -69,28 +75,28 @@ function initList(side) {
 	}
 }
 
-function createFeed() {
+function createFeed(path) {
 	const li = document.createElement('li');
 	li.classList.add('list-group-item', 'border-0', 'border-end-0');
 	const h = document.createElement('h3');
 	h.classList.add('h6', 'm-0');
-	h.textContent = state.newData.feed.title;
+	h.innerHTML = path.title;
 	const p = document.createElement('p');
 	p.classList.add('m-0', 'small', 'text-black-50');
-	p.textContent = state.newData.feed.description;
+	p.textContent = path.description;
 	li.append(h, p);
 	state.elements.feeds.ul.prepend(li);
 }
 
-function createPost(item) {
+function createPost(post) {
 	const li = document.createElement('li');
 	li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 	const a = document.createElement('a');
 	a.classList.add('fw-bold');
 	a.setAttribute('target', '_blank');
 	a.setAttribute('rel', 'noopener noreferrer');
-	a.href = item.link;
-	a.textContent = item.title;
+	a.href = post.link;
+	a.textContent = post.title;
 	const button = document.createElement('button');
 	button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
 	button.setAttribute('type', 'button');
@@ -130,10 +136,26 @@ export const watchedState = onChange(state, (path) => {
 				initList('posts');
 				initList('feeds');
 			}
-			createFeed();
-			for (const item of state.newData.items) {
-				createPost(item);
-			}
+		default:
+			break;
+	}
+});
+
+export const watchedData = onChange(data, (path, newValue) => {
+	const pathArr = path.split('.');
+	console.log(path);
+	console.log(pathArr);
+	console.log(data);
+	console.log(newValue);
+	switch(pathArr.length) {
+		case 1:
+			createFeed(data[pathArr[0]]);
+			Object.keys(data[pathArr[0]].posts).map((post) => {
+				console.log(post);
+				createPost(data[pathArr[0]].posts[post]);
+			});
+			break;
+		case 2:
 		default:
 			break;
 	}

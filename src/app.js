@@ -15,26 +15,28 @@ function validateLink(link) {
 			watchedState.input.state = 'ready';
 			return true;
 		})
+		.then(() => link)
 		.catch((err) => {
-			watchedState.input.enable = true;
-			watchedState.input.state = 'fail';
-			watchedState.app.state = 'fail';
-			watchedState.app.errors.push(err.errors[0]);
-			return false;
-		})
-		.then((bool) => [bool, link]);
+			throw new Error(err.errors[0]);
+		}); // was [bool, link];
 }
 
-function requestAndValidate([bool, link]) {
-	if (!bool) return;
+function requestAndValidate(link) {
 	return axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
 		.then((response) => {
 			console.log(response.data.contents);
 			return [link, response.data.contents];
 		})
 		.catch((err) => {
-			watchedState.app.errors.push(err.errors[0]);
+			throw new Error(err);
 		});
+}
+
+function checkNewPosts(feedLink) {
+	axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(feedLink)}`)
+		.then((response) => {
+			// here we parse it
+		})
 }
 
 export default function app() {
@@ -42,23 +44,21 @@ export default function app() {
 		e.preventDefault();
 		watchedState.input.enable = false;
 		watchedState.app.state = 'load';
-		validateLink(input.value).then((processed) => {
-			console.log(processed);
-			return requestAndValidate(processed);
-		}).then((xml) => {
-			p(xml);
-			return parse(xml);
-		}).then(([link, parsedData]) => {
-			console.log(parsedData);
-			watchedState.newData = parsedData;
-			watchedState.input.feeds.push(link);
-			return Promise.resolve(true);
-		})
-		.then(() => {
-			watchedState.app.state = 'success';
-			watchedState.input.state = 'empty';
-			watchedState.input.enable = true;
-		});
-		// add catch here
+		validateLink(input.value)
+			.then((varifiedLink) => {
+				return requestAndValidate(varifiedLink);
+			}).then((contents) => {
+				return parse(contents);
+			}).then(() => {
+				watchedState.app.state = 'success';
+				watchedState.input.state = 'empty';
+				watchedState.input.enable = true;
+			})
+			.catch((err) => {
+				watchedState.input.enable = true;
+				watchedState.input.state = 'fail';
+				watchedState.app.state = 'fail';
+				watchedState.app.errors.push(err.message);
+			});
 	});
 }

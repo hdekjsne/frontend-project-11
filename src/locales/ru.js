@@ -4,7 +4,8 @@ export const ru = {
 			errors: {
 				invalidURL: 'Ссылка должна быть валидным URL',
 				notUniq: 'RSS уже существует',
-				badConnection: 'Ошибка сети',	
+				badConnection: 'Ошибка сети',
+				emptyField: 'Поле не должно быть пустым',
 			},
 			success: 'RSS успешно загружен',
 		},

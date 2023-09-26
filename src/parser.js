@@ -1,14 +1,11 @@
-import { watchedState } from "./view.js";
-import { data } from "./data/data.js";
+import { watchedState, watchedData } from "./view.js";
 
+/*
 export default function parse([link, xml]) {
 	const parser = new DOMParser;
 	const tree = parser.parseFromString(xml, 'text/xml');
 	if (tree.querySelectorAll('rss').length === 0) {
-		watchedState.app.errors.push('should be a valid URL');
-		watchedState.input.state = 'fail';
-		watchedState.input.enable = true;
-		return;
+		throw new Error('should be a valid URL');
 	}
 	const items = [];
 	tree.querySelectorAll('item')
@@ -29,34 +26,31 @@ export default function parse([link, xml]) {
 	console.log(result);
 	return Promise.resolve([link, result]);
 }
+*/
 
-export function p([link, xml]) {
+export default function parse([link, xml]) {
 	const parser = new DOMParser;
 	const tree = parser.parseFromString(xml, 'text/xml');
 	if (tree.querySelectorAll('rss').length === 0) {
 		throw new Error('should be a valid URL');
-/* 		
-		watchedState.app.errors.push('should be a valid URL');
-		watchedState.input.state = 'fail';
-		watchedState.input.enable = true;
-*/		
 	}
-	const items = {}; // ?
+	const items = {};
 	tree.querySelectorAll('item')
 		.forEach((item) => {
-			const title = item.querySelector('title').textContent;
+			let title = item.querySelector('title').textContent;
 			items[title] = {
 				title,
 				link: item.querySelector('link').textContent,
 				description: item.querySelector('description').textContent,
 			}
 		});
+	const feedTitle = tree.querySelector('channel > title').textContent;
 	const result = {
-		title: tree.querySelector('channel > title').textContent,
+		title: feedTitle.includes('.') ? feedTitle.replace('.', '&period;') : feedTitle,
 		link: link,
 		description: tree.querySelector('channel > description').textContent,
 		posts: items,
 	};
-	data[result.title] = result;
-	console.log(data);
+	watchedState.input.feeds.push(link);
+	watchedData[result.title] = result;
 }
