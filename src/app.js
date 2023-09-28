@@ -2,10 +2,10 @@ import { state } from './state.js';
 import * as yup from 'yup';
 import { watchedState } from './view.js';
 import axios from 'axios';
-import parse from './parser.js';
-import { p } from './parser.js';
+import { parse, parseSinglePost } from './parser.js';
 
 const { input, submitBtn } = state.elements.core;
+let fiveSecCheck;
 
 function validateLink(link) {
 	const ifUrl = yup.string().required().url().trim();
@@ -32,11 +32,15 @@ function requestAndValidate(link) {
 		});
 }
 
-function checkNewPosts(feedLink) {
-	axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(feedLink)}`)
-		.then((response) => {
-			// here we parse it
-		})
+function checkNewPosts() {
+	console.log('timeout\'s on watch');
+	state.input.feeds.forEach((feedLink) => {
+		axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(feedLink)}`)
+			.then((response) => {
+				parseSinglePost(response.data.contents);
+			});
+	});
+	fiveSecCheck = setTimeout(checkNewPosts, 5000);
 }
 
 export default function app() {
@@ -61,4 +65,6 @@ export default function app() {
 				watchedState.app.errors.push(err.message);
 			});
 	});
+
+	fiveSecCheck = setTimeout(checkNewPosts, 5000);
 }

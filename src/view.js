@@ -156,6 +156,7 @@ export const watchedData = onChange(data, (path, newValue) => {
 			});
 			break;
 		case 2:
+			createPost(data[path]);
 		default:
 			break;
 	}
