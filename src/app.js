@@ -22,7 +22,7 @@ function validateLink(link) {
 }
 
 function requestAndValidate(link) {
-	return axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`)
+	return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
 		.then((response) => {
 			console.log(response.data.contents);
 			return [link, response.data.contents];
@@ -34,7 +34,7 @@ function requestAndValidate(link) {
 
 function checkNewPosts() {
 	state.input.feeds.forEach((feedLink) => {
-		axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(feedLink)}`)
+		axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(feedLink)}`)
 			.then((response) => {
 				parseSinglePost(response.data.contents);
 			});
