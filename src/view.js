@@ -43,7 +43,7 @@ function showError() {
 	} else if (error.match(/required field/)) {
 		feedbackP.textContent = i18next.t('feedback.errors.emptyField');
 	} else if (error.match(/no RSS/)) {
-		feedbackP.textContent = i18next.t('feedback.errors,noRSS');
+		feedbackP.textContent = i18next.t('feedback.errors.noRSS');
 	} else {
 		feedbackP.textContent = i18next.t('feedback.errors.badConnection');
 	}
