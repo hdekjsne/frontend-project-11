@@ -34,6 +34,7 @@ function styleInput() {
 function showError() {
 	if (state.app.errors.length === 0) return;
 	const error = state.app.errors[0];
+	console.log(error);
 	feedbackP.classList.remove('text-success');
 	feedbackP.classList.add('text-danger');
 	if (error.match(/a valid URL$/)) {
