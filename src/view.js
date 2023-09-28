@@ -34,7 +34,6 @@ function styleInput() {
 function showError() {
 	if (state.app.errors.length === 0) return;
 	const error = state.app.errors[0];
-	console.log(error);
 	feedbackP.classList.remove('text-success');
 	feedbackP.classList.add('text-danger');
 	if (error.match(/a valid URL$/)) {
@@ -43,6 +42,8 @@ function showError() {
 		feedbackP.textContent = i18next.t('feedback.errors.notUniq');
 	} else if (error.match(/required field/)) {
 		feedbackP.textContent = i18next.t('feedback.errors.emptyField');
+	} else if (error.match(/no RSS/)) {
+		feedbackP.textContent = i18next.t('feedback.errors,noRSS');
 	} else {
 		feedbackP.textContent = i18next.t('feedback.errors.badConnection');
 	}
@@ -89,7 +90,7 @@ function createFeed(path) {
 	state.elements.feeds.ul.prepend(li);
 }
 
-function createPost(feed, post) { // (feed, post) .setAttribute('data-something', '${feed}.posts.${post}')
+function createPost(feed, post) {
 	const li = document.createElement('li');
 	li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 	li.setAttribute('data-custom-feed', feed);
@@ -98,7 +99,7 @@ function createPost(feed, post) { // (feed, post) .setAttribute('data-something'
 	a.classList.add('fw-bold');
 	a.setAttribute('target', '_blank');
 	a.setAttribute('rel', 'noopener noreferrer');
-	a.href = data[feed].posts[post];
+	a.href = data[feed].posts[post].link;
 	a.textContent = data[feed].posts[post].title;
 	const button = document.createElement('button');
 	button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -161,18 +162,12 @@ export const watchedState = onChange(state, (path) => {
 
 export const watchedData = onChange(data, (path, newValue) => {
 	const pathArr = path.split('.');
-	// <data>.feed
-	// <data>.feed.posts.post
-	console.log(path);
-	console.log(pathArr);
-	console.log(data);
-	console.log(newValue);
 	switch(pathArr.length) {
 		case 1:
 			createFeed(data[pathArr[0]]);
 			Object.keys(data[pathArr[0]].posts).map((post) => {
 				console.log(post);
-				createPost(pathArr[0], post); // refactor
+				createPost(pathArr[0], post);
 			});
 			break;
 		case 3:

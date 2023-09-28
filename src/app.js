@@ -18,7 +18,7 @@ function validateLink(link) {
 		.then(() => link)
 		.catch((err) => {
 			throw new Error(err.errors[0]);
-		}); // was [bool, link];
+		});
 }
 
 function requestAndValidate(link) {
@@ -33,7 +33,6 @@ function requestAndValidate(link) {
 }
 
 function checkNewPosts() {
-	console.log('timeout\'s on watch');
 	state.input.feeds.forEach((feedLink) => {
 		axios.get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(feedLink)}`)
 			.then((response) => {

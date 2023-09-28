@@ -14,7 +14,6 @@ export const state = {
 			ul: undefined,
 		},
 		modal: {
-			modal: document.getElementById('modal'),
 			modalTitle: document.querySelector('.modal-title'),
 			modalBody: document.querySelector('.modal-body'),
 			modalBtn: document.querySelector('.modal-footer a'),
@@ -46,5 +45,4 @@ export const state = {
 		enable: true,
 		feeds: [],
 	},
-	newData: undefined,
 }

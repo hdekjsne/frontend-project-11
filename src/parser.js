@@ -5,7 +5,7 @@ export function parse([link, xml]) {
 	const parser = new DOMParser;
 	const tree = parser.parseFromString(xml, 'text/xml');
 	if (tree.querySelectorAll('rss').length === 0) {
-		throw new Error('should be a valid URL');
+		throw new Error('no RSS');
 	}
 	const items = {};
 	tree.querySelectorAll('item')

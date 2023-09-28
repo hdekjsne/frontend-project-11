@@ -17,5 +17,4 @@ data = {
 	}
 	...otherFeed
 }
-// доступ по Object.keys;
 */

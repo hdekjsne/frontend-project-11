@@ -6,6 +6,7 @@ export const ru = {
 				notUniq: 'RSS уже существует',
 				badConnection: 'Ошибка сети',
 				emptyField: 'Поле не должно быть пустым',
+				noRSS: 'Ресурс не содержит валидный RSS',
 			},
 			success: 'RSS успешно загружен',
 		},
