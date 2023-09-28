@@ -14,6 +14,7 @@ i18next.init({
 
 const { input, feedbackP } = state.elements.core;
 const { posts, feeds } = state.elements;
+const { modalTitle, modalBody, modalBtn } = state.elements.modal;
 
 function styleInput() {
 	switch (state.input.state) {
@@ -88,15 +89,17 @@ function createFeed(path) {
 	state.elements.feeds.ul.prepend(li);
 }
 
-function createPost(post) {
+function createPost(feed, post) { // (feed, post) .setAttribute('data-something', '${feed}.posts.${post}')
 	const li = document.createElement('li');
 	li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+	li.setAttribute('data-custom-feed', feed);
+	li.setAttribute('data-custom-post', post);
 	const a = document.createElement('a');
 	a.classList.add('fw-bold');
 	a.setAttribute('target', '_blank');
 	a.setAttribute('rel', 'noopener noreferrer');
-	a.href = post.link;
-	a.textContent = post.title;
+	a.href = data[feed].posts[post];
+	a.textContent = data[feed].posts[post].title;
 	const button = document.createElement('button');
 	button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
 	button.setAttribute('type', 'button');
@@ -107,8 +110,20 @@ function createPost(post) {
 	li.addEventListener('click', (e) => {
 		li.querySelector('a').classList.remove('fw-bold');
 		li.querySelector('a').classList.add('fw-normal', 'link-secondary');
-	})
+	});
+	li.addEventListener('click', (e) => {
+		watchedState.elements.modal.infoLi = li;
+	});
 	state.elements.posts.ul.prepend(li);
+}
+
+function fillModal() {
+	const infoLi = state.elements.modal.infoLi;
+	const feed = infoLi.dataset.customFeed;
+	const post = infoLi.dataset.customPost;
+	modalTitle.textContent = data[feed].posts[post].title;
+	modalBody.textContent = data[feed].posts[post].description;
+	modalBtn.href = data[feed].posts[post].link;
 }
 
 export const watchedState = onChange(state, (path) => {
@@ -136,6 +151,9 @@ export const watchedState = onChange(state, (path) => {
 				initList('posts');
 				initList('feeds');
 			}
+			break;
+		case 'elements.modal.infoLi':
+			fillModal();
 		default:
 			break;
 	}
@@ -143,6 +161,8 @@ export const watchedState = onChange(state, (path) => {
 
 export const watchedData = onChange(data, (path, newValue) => {
 	const pathArr = path.split('.');
+	// <data>.feed
+	// <data>.feed.posts.post
 	console.log(path);
 	console.log(pathArr);
 	console.log(data);
@@ -152,11 +172,11 @@ export const watchedData = onChange(data, (path, newValue) => {
 			createFeed(data[pathArr[0]]);
 			Object.keys(data[pathArr[0]].posts).map((post) => {
 				console.log(post);
-				createPost(data[pathArr[0]].posts[post]);
+				createPost(pathArr[0], post); // refactor
 			});
 			break;
-		case 2:
-			createPost(data[path]);
+		case 3:
+			createPost(pathArr[0], pathArr[2]);
 		default:
 			break;
 	}

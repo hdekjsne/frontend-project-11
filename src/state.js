@@ -13,6 +13,13 @@ export const state = {
 			container: document.querySelector('.feeds'),
 			ul: undefined,
 		},
+		modal: {
+			modal: document.getElementById('modal'),
+			modalTitle: document.querySelector('.modal-title'),
+			modalBody: document.querySelector('.modal-body'),
+			modalBtn: document.querySelector('.modal-footer a'),
+			infoLi: undefined,
+		}
 	},
 	app: {
 		state: 'welcome',
