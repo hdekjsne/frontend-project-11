@@ -1,4 +1,4 @@
-export default ru = {
+const ru = {
   translation: {
     feedback: {
       errors: {
@@ -17,3 +17,5 @@ export default ru = {
     },
   },
 };
+
+export default ru;

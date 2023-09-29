@@ -1,4 +1,4 @@
-export default state = {
+const state = {
   elements: {
     core: {
       input: document.querySelector('#url-input'),
@@ -30,3 +30,5 @@ export default state = {
     feeds: [],
   },
 };
+
+export default state;
