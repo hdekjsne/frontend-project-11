@@ -23,16 +23,13 @@ function validateLink(link) {
 
 function requestAndValidate(link) {
   return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
-    .then((response) => {
-      return [link, response.data.contents];
-    })
+    .then((response) => [link, response.data.contents])
     .catch((err) => {
       throw new Error(err);
     });
 }
 
 function checkNewPosts() {
-  console.log('timeout');
   state.input.feeds.forEach((feedLink) => {
     axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(feedLink)}`)
       .then((response) => {
@@ -49,11 +46,9 @@ export default function app() {
     watchedState.input.enable = false;
     watchedState.app.state = 'load';
     validateLink(input.value)
-      .then((varifiedLink) => {
-        return requestAndValidate(varifiedLink);
-      }).then((contents) => {
-        return parse(contents);
-      }).then(() => {
+      .then((varifiedLink) => requestAndValidate(varifiedLink))
+			.then((contents) => parse(contents))
+			.then(() => {
         watchedState.app.state = 'success';
         watchedState.input.state = 'empty';
         watchedState.input.enable = true;
