@@ -24,7 +24,6 @@ function validateLink(link) {
 function requestAndValidate(link) {
 	return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
 		.then((response) => {
-			console.log(response.data.contents);
 			return [link, response.data.contents];
 		})
 		.catch((err) => {

@@ -19,7 +19,7 @@ const { modalTitle, modalBody, modalBtn } = state.elements.modal;
 function styleInput() {
 	switch (state.input.state) {
 		case 'empty':
-			input.textContent = null;
+			input.value = null;
 			input.setAttribute('autofocus', '');
 		case 'ready':
 			input.classList.remove('is-invalid');
