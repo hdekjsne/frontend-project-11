@@ -3,8 +3,8 @@
 import i18next from 'i18next';
 import onChange from 'on-change';
 import { ru } from './locales/ru.js';
-import { state } from './state.js';
-import { data } from './data/data.js';
+import state from './state.js';
+import data from './data/data.js';
 
 i18next.init({
   lng: 'ru',

@@ -1,4 +1,4 @@
-export const ru = {
+export default ru = {
   translation: {
     feedback: {
       errors: {

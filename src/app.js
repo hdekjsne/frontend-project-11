@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import axios from 'axios';
-import { state } from './state.js';
+import state from './state.js';
 import { watchedState } from './view.js';
 import { parse, parseSinglePost } from './parser.js';
 
@@ -47,8 +47,8 @@ export default function app() {
     watchedState.app.state = 'load';
     validateLink(input.value)
       .then((varifiedLink) => requestAndValidate(varifiedLink))
-			.then((contents) => parse(contents))
-			.then(() => {
+      .then((contents) => parse(contents))
+      .then(() => {
         watchedState.app.state = 'success';
         watchedState.input.state = 'empty';
         watchedState.input.enable = true;

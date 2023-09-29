@@ -1,5 +1,5 @@
 import { watchedState, watchedData } from './view.js';
-import { data } from './data/data.js';
+import data from './data/data.js';
 
 export function parse([link, xml]) {
   const parser = new DOMParser();
@@ -20,7 +20,7 @@ export function parse([link, xml]) {
   const feedTitle = tree.querySelector('channel > title').textContent.replace('.', '&period;');
   const result = {
     title: feedTitle,
-    link: link,
+    link,
     description: tree.querySelector('channel > description').textContent,
     posts: items,
   };
@@ -34,14 +34,14 @@ export function parseSinglePost(xml) {
   const feedTitle = tree.querySelector('channel > title').textContent.replace('.', '&period;');
   const existingPosts = Object.keys(data[feedTitle].posts);
   tree.querySelectorAll('item')
-  .forEach((item) => {
-    const postTitle = item.querySelector('title').textContent;
-    if (!existingPosts.includes(postTitle)) {
-      watchedData[feedTitle].posts[postTitle] = {
-        title: postTitle,
-        description: item.querySelector('description').textContent,
-        link: item.querySelector('link').textContent,
-      };
-    }
-  });
+    .forEach((item) => {
+      const postTitle = item.querySelector('title').textContent;
+      if (!existingPosts.includes(postTitle)) {
+        watchedData[feedTitle].posts[postTitle] = {
+          title: postTitle,
+          description: item.querySelector('description').textContent,
+          link: item.querySelector('link').textContent,
+        };
+      }
+    });
 }
