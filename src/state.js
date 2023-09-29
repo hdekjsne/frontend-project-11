@@ -18,7 +18,7 @@ const state = {
       modalBody: document.querySelector('.modal-body'),
       modalBtn: document.querySelector('.modal-footer a'),
       infoLi: undefined,
-    }
+    },
   },
   app: {
     state: 'welcome',
