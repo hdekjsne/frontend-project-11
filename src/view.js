@@ -2,7 +2,7 @@
 
 import i18next from 'i18next';
 import onChange from 'on-change';
-import { ru } from './locales/ru.js';
+import ru from './locales/ru.js';
 import state from './state.js';
 import data from './data/data.js';
 
